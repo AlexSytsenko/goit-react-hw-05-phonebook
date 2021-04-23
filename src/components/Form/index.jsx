@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import shortid from 'shortid';
 
+import * as actions from '../../redux/contacts/actions';
 import styles from './Form.module.scss';
 
 class Form extends Component {
@@ -8,6 +11,7 @@ class Form extends Component {
     name: '',
     number: '',
   };
+
 
   handleChangeForm = e => {
     const { name, value } = e.currentTarget;
@@ -18,12 +22,31 @@ class Form extends Component {
   handleSubmit = e => {
     e.preventDefault();
 
-    this.props.onSubmit(this.state);
+    const { name, number } = this.state;
+    
+    if (this.isUniqueContact(name)) {
+      alert(`${name} is already in contacts`);
+      return;
+    };
+
+    const contact = {
+      id: shortid(),
+      name,
+      number,
+    };
+
+    this.props.onSubmit(contact);
     this.reset();
   };
 
   reset = () => {
     this.setState({ name: '', number: '' });
+  };
+
+  isUniqueContact = name => {
+    const { contacts } = this.props;
+
+    return contacts.some(item => item.name === name);
   };
 
   render() {
@@ -69,4 +92,12 @@ Form.propTypes = {
   onSubmit: PropTypes.func.isRequired,
 };
 
-export default Form;
+const mapStateToProps = state => ({
+  contacts: state.contacts.items,
+});
+
+const mapDispatchToProps = dispatch => ({
+  onSubmit: value => dispatch(actions.addContact(value)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Form);

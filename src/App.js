@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import shortid from 'shortid';
+
 
 import Form from './components/Form';
 import ContactsList from './components/ContactsList';
@@ -17,48 +17,48 @@ class App extends Component {
     filter: '',
   };
 
-  componentDidUpdate(prevProps, prevState) {
-    const prevContacts = prevState.сontacts;
-    const nextContacts = this.state.contacts;
+  // componentDidUpdate(prevProps, prevState) {
+  //   const prevContacts = prevState.сontacts;
+  //   const nextContacts = this.state.contacts;
 
-    if (prevContacts !== nextContacts) {
-      localStorage.setItem('contacts', JSON.stringify(nextContacts));
-    }
-  }
+  //   if (prevContacts !== nextContacts) {
+  //     localStorage.setItem('contacts', JSON.stringify(nextContacts));
+  //   }
+  // }
 
-  componentDidMount() {
-    const contacts = localStorage.getItem('contacts');
-    const parsedContacts = JSON.parse(contacts);
+  // componentDidMount() {
+  //   const contacts = localStorage.getItem('contacts');
+  //   const parsedContacts = JSON.parse(contacts);
 
-    if (parsedContacts) {
-      this.setState({ contacts: parsedContacts });
-    }
-  }
+  //   if (parsedContacts) {
+  //     this.setState({ contacts: parsedContacts });
+  //   }
+  // }
 
-  formSubmitHandler = ({ name, number }) => {
-    if (!this.isUniqueContact(name)) {
-      alert(`${name} is already in contacts`);
-      return;
-    }
-    const contact = {
-      id: shortid(),
-      name,
-      number,
-    };
-    this.setState(({ contacts }) => ({
-      contacts: [...contacts, contact],
-    }));
-  };
+  // formSubmitHandler = ({ name, number }) => {
+  //   if (!this.isUniqueContact(name)) {
+  //     alert(`${name} is already in contacts`);
+  //     return;
+  //   }
+  //   const contact = {
+  //     id: shortid(),
+  //     name,
+  //     number,
+  //   };
+  //   this.setState(({ contacts }) => ({
+  //     contacts: [...contacts, contact],
+  //   }));
+  // };
 
-  isUniqueContact = name => {
-    const { contacts } = this.state;
+  // isUniqueContact = name => {
+  //   const { contacts } = this.state;
 
-    return !contacts.some(item => item.name === name);
-  };
+  //   return !contacts.some(item => item.name === name);
+  // };
 
-  changeFilter = e => {
-    this.setState({ filter: e.currentTarget.value });
-  };
+  // changeFilter = e => {
+  //   this.setState({ filter: e.currentTarget.value });
+  // };
 
   getVisibleContacts = () => {
     const { contacts, filter } = this.state;
@@ -85,7 +85,8 @@ class App extends Component {
         <Form onSubmit={this.formSubmitHandler} />
 
         <h2 className="title">Contacts</h2>
-        <FilterContacts value={filter} onChange={this.changeFilter} />
+        <FilterContacts/>
+        {/* <FilterContacts value={filter} onChange={this.changeFilter} /> */}
         <ContactsList
           contacts={visibleContacts}
           onDeleteContact={this.deleteContact}

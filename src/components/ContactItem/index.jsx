@@ -1,5 +1,7 @@
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
+import * as actions from '../../redux/contacts/actions';
 import styles from './ContactItem.module.scss';
 
 const ContactsItem = ({ name, number, id, onDeleteContact }) => (
@@ -24,4 +26,14 @@ ContactsItem.propTypes = {
   onDeleteContact: PropTypes.func.isRequired,
 };
 
-export default ContactsItem;
+
+const mapStateToProps = state => ({
+  contacts: state.contacts.items,
+});
+
+const mapDispatchToProps = dispatch => ({
+  onSubmit: value => dispatch(actions.addContact(value)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ContactsItem);
+
