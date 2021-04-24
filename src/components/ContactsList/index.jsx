@@ -4,24 +4,10 @@ import { connect } from 'react-redux';
 import ContactsItem from '../ContactItem';
 import styles from './ContactsList.module.scss';
 
-
-const ContactsList = ({ contacts, filter }) => {
-
-  const getVisibleContacts = () => {
-   
-    if (!filter) {
-      return contacts;
-    }
-
-    const normalizedFilter = filter.toLocaleLowerCase();
-
-    return contacts.filter(contact => contact.name.toLocaleLowerCase().includes(normalizedFilter),
-    );
-  };
-
+const ContactsList = ({ contacts }) => {
   return (
     <ul className={styles.contacts__list}>
-      {getVisibleContacts().map(({ id }) => (
+      {contacts.map(({ id }) => (
         <ContactsItem key={id} value={id} />
       ))}
     </ul>
@@ -30,14 +16,21 @@ const ContactsList = ({ contacts, filter }) => {
 
 ContactsList.propTypes = {
   contacts: PropTypes.array.isRequired,
-  filter: PropTypes.string.isRequired,
 };
 
+const getVisibleContacts = (items, filter) => {
+  if (!filter) {
+    return items;
+  }
+  const normalizedFilter = filter.toLocaleLowerCase();
 
-const mapStateToProps = state => ({
-  contacts: state.contacts.items,
-  filter: state.contacts.filter,
+  return items.filter(contact =>
+    contact.name.toLocaleLowerCase().includes(normalizedFilter),
+  );
+};
+
+const mapStateToProps = ({ contacts: { items, filter } }) => ({
+  contacts: getVisibleContacts(items, filter),
 });
-
 
 export default connect(mapStateToProps)(ContactsList);

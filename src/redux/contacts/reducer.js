@@ -1,4 +1,3 @@
-
 import { combineReducers } from 'redux';
 
 import * as types from './types';
@@ -13,11 +12,10 @@ const initialState = {
   filter: '',
 };
 
-
 const itemsReducer = (state = initialState.items, { type, payload }) => {
   switch (type) {
     case types.ADD:
-      return [ ...state, payload ];
+      return [...state, payload];
 
     case types.DELETE:
       return state.filter(contact => contact.id !== payload);
@@ -37,21 +35,9 @@ const filterReducer = (state = initialState.filter, { type, payload }) => {
   }
 };
 
-
 const contactsReducer = combineReducers({
   items: itemsReducer,
   filter: filterReducer,
 });
 
 export default contactsReducer;
-
-
-
-
-// deleteContact = contactId => {
-//     this.setState(prevState => ({
-//       contacts: prevState.contacts.filter(contact => contact.id !== contactId),
-//     }));
-
-
-
