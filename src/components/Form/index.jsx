@@ -12,7 +12,6 @@ class Form extends Component {
     number: '',
   };
 
-
   handleChangeForm = e => {
     const { name, value } = e.currentTarget;
 
@@ -90,6 +89,7 @@ class Form extends Component {
 
 Form.propTypes = {
   onSubmit: PropTypes.func.isRequired,
+  contacts: PropTypes.array.isRequired,
 };
 
 const mapStateToProps = state => ({

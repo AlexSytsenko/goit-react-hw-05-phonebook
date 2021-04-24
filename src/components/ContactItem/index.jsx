@@ -4,7 +4,12 @@ import { connect } from 'react-redux';
 import * as actions from '../../redux/contacts/actions';
 import styles from './ContactItem.module.scss';
 
-const ContactsItem = ({ name, number, id, onDeleteContact }) => (
+const ContactsItem = ({ contacts, value, onDeleteContact }) => {
+
+  const contact = contacts.filter(item => item.id === value)[0];
+  const { name, number } = contact;
+  
+  return (
   <li className={styles.contact__item}>
     <p className={styles.contact__text}>
       {name}: {number}
@@ -12,17 +17,16 @@ const ContactsItem = ({ name, number, id, onDeleteContact }) => (
     <button
       className={styles.contact__button}
       type="button"
-      onClick={() => onDeleteContact(id)}
+    onClick={() => onDeleteContact(value)}
     >
       Delete
     </button>
   </li>
-);
+  )};
 
 ContactsItem.propTypes = {
-  name: PropTypes.string.isRequired,
-  number: PropTypes.string.isRequired,
-  id: PropTypes.string.isRequired,
+  contacts: PropTypes.array.isRequired,
+  value: PropTypes.string.isRequired,
   onDeleteContact: PropTypes.func.isRequired,
 };
 
@@ -32,7 +36,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  onSubmit: value => dispatch(actions.addContact(value)),
+  onDeleteContact: value => dispatch(actions.deleteContact(value)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ContactsItem);

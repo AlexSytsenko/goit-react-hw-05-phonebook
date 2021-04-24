@@ -1,25 +1,43 @@
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 import ContactsItem from '../ContactItem';
 import styles from './ContactsList.module.scss';
 
-const ContactsList = ({ contacts, onDeleteContact }) => (
-  <ul className={styles.contacts__list}>
-    {contacts.map(({ id, name, number }) => (
-      <ContactsItem
-        key={id}
-        name={name}
-        number={number}
-        id={id}
-        onDeleteContact={onDeleteContact}
-      />
-    ))}
-  </ul>
-);
 
-ContactsList.propTypes = {
-  contacts: PropTypes.arrayOf(PropTypes.object).isRequired,
-  onDeleteContact: PropTypes.func.isRequired,
+const ContactsList = ({ contacts, filter }) => {
+
+  const getVisibleContacts = () => {
+   
+    if (!filter) {
+      return contacts;
+    }
+
+    const normalizedFilter = filter.toLocaleLowerCase();
+
+    return contacts.filter(contact => contact.name.toLocaleLowerCase().includes(normalizedFilter),
+    );
+  };
+
+  return (
+    <ul className={styles.contacts__list}>
+      {getVisibleContacts().map(({ id }) => (
+        <ContactsItem key={id} value={id} />
+      ))}
+    </ul>
+  );
 };
 
-export default ContactsList;
+ContactsList.propTypes = {
+  contacts: PropTypes.array.isRequired,
+  filter: PropTypes.string.isRequired,
+};
+
+
+const mapStateToProps = state => ({
+  contacts: state.contacts.items,
+  filter: state.contacts.filter,
+});
+
+
+export default connect(mapStateToProps)(ContactsList);
