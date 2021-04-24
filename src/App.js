@@ -1,25 +1,19 @@
-import React, { Component } from 'react';
 
 import Form from './components/Form';
 import ContactsList from './components/ContactsList';
 import FilterContacts from './components/FilterContacts';
 import './styles/container.scss';
 
-class App extends Component {
-  
+const App = () => (
+  <div className="container">
+    <h2 className="title title__main">Phonebook</h2>
+    <Form />
+    <h2 className="title">Contacts</h2>
+    <FilterContacts />
+    <ContactsList />
+  </div>
+);
 
-  render() {
-    return (
-      <div className="container">
-        <h2 className="title title__main">Phonebook</h2>
-        <Form onSubmit={this.formSubmitHandler} />
-        <h2 className="title">Contacts</h2>
-        <FilterContacts/>
-        <ContactsList/>
-      </div>
-    );
-  }
-}
 
 export default App;
 
